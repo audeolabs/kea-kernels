@@ -43,4 +43,4 @@ def shared_bytes(config: DotConfig, parts: int = 2) -> int:
     if parts == 3:
         return kernels_exact.shared_bytes(config)
     cfg = kernels_exact.base(kernels_exact.ExactDeferredConfig.of(config), xchg=4)
-    return kernels_parts.PartsConfig.of(cfg, parts, False).shared_bytes
+    return kernels_parts.PartsConfig.of(cfg, parts).shared_bytes

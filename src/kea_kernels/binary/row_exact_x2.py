@@ -86,7 +86,7 @@ def _row_epilogue_exact_parts(P, XS, XS_STRIDE, S, B, R, Y, Q, QS, NW, NB, OW, O
     else:
         value = _mul_rn(value, tl.load(S + n, n < N, other=0))
     # row_exact: park the exact value in Y, CTA barrier, volatile reload, so that from here on the kernel
-    # is the SPLIT == 1 _row_epilogue token for token and compiles the same way.
+    # is M1's SPLIT == 1 _row_epilogue token for token and compiles the same way.
     tl.store(Y + row * N + n, value, n < N)
     tl.debug_barrier()
     value = tl.full((BLOCK,), 0, tl.float32)

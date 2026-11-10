@@ -46,6 +46,8 @@ def test_exact_deferred_sources():
         s2, n2 = kernels_exact_x2.dot_source(cfg, 0, 2)
         assert "XCHG == 5" in s3 and n2 == "x2_" + n3 and "constexpr int PARTS = 2;" in s2
         assert kernels_exact_x2.dot_source(cfg, 0, 3) == (s3, n3)
+        assert kernels_exact_x2.shared_bytes(cfg, 2) < kernels_exact_x2.shared_bytes(cfg, 3) == \
+            kernels_exact.shared_bytes(cfg)
 
 
 def test_part_count_overrides_components_and_forwards_writes():

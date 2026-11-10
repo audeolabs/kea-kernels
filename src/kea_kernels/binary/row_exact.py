@@ -55,7 +55,7 @@ def _mul_rn(a, b):
     # One scalar mul.rn.f32 per element in inline PTX. LLVM's SLP vectorizer otherwise packs value * alpha
     # into mul.rn.f32x2, and ptxas contracted that f32x2 mul.rn with the following residual add.rn into an
     # FFMA (measured: 4 extra FFMA in SASS, x = fma(v, alpha, R) instead of R + round(v * alpha)). A
-    # scalar mul.rn.f32 is kept as written (PTX ISA: explicit rounding is not contracted), as in _row_epilogue.
+    # scalar mul.rn.f32 is kept as written (PTX ISA: explicit rounding is not contracted), as in M1's kernel.
     return tl.inline_asm_elementwise("mul.rn.f32 $0, $1, $2;", "=f,f,f", [a, b], dtype=tl.float32, is_pure=True, pack=1)
 
 
@@ -95,7 +95,7 @@ def _row_epilogue_exact(P, XS, XS_STRIDE, S, B, R, Y, Q, QS, NW, NB, OW, OB,
     else:
         value = _mul_rn(value, tl.load(S + n, n < N, other=0))
     # Park the exact value in Y (overwritten below) and reload it with a volatile load (no store-to-load
-    # forwarding), so that from here on the kernel is the SPLIT == 1 _row_epilogue token for token and
+    # forwarding), so that from here on the kernel is M1's SPLIT == 1 _row_epilogue token for token and
     # compiles the same way (module docstring). Triton may give the store and the load different layouts
     # (it does at 4 warps), i.e. threads may read elements other threads wrote: the CTA barrier orders
     # and makes visible those global writes.
