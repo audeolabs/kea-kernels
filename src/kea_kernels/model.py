@@ -234,7 +234,12 @@ def _transcribe_one(model: Model, clip: np.ndarray) -> Transcript:
     seq = getattr(h, "y_sequence", None)
     tokens = [int(t) for t in (seq.tolist() if hasattr(seq, "tolist") else (seq or []))]
     ts = getattr(h, "timestamp", None)
-    stamps = [int(t) for t in ts.tolist()] if hasattr(ts, "tolist") else [int(t) for t in (ts or [])]
+    if hasattr(ts, "tolist"):
+        stamps = [int(t) for t in ts.tolist()]
+    elif isinstance(ts, list) and all(isinstance(t, int) for t in ts):
+        stamps = list(ts)
+    else:  # NeMo returns a dict here when word / segment timestamps are requested; not used by this runtime
+        stamps = []
     return Transcript(h.text if hasattr(h, "text") else str(h), tokens, stamps)
 
 
