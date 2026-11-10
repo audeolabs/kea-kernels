@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kea-kernels"
+version = "0.1.0"
+description = "GPU kernels and a minimal runtime for the Kea-B (1-bit) and Kea-T (ternary) speech recognition models"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Audeo Labs" }]
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: POSIX :: Linux",
+    "Environment :: GPU :: NVIDIA CUDA :: 12",
+    "Topic :: Multimedia :: Sound/Audio :: Speech",
+]
+# Ranges around what was measured: torch 2.11.0+cu128, triton 3.6.0, nemo_toolkit 3.0.0, safetensors 0.8.0,
+# soundfile 0.13.1, omegaconf 2.3.0, numpy 2.4. Install torch from the CUDA 12.8 index (see USAGE.md).
+dependencies = [
+    "torch>=2.11,<2.12",
+    "triton>=3.6,<3.7",
+    "nemo_toolkit[asr]>=3.0,<3.1",
+    "cuda-bindings>=12.9,<13",
+    "nvidia-cuda-nvrtc-cu12>=12.8,<13",
+    "safetensors>=0.6",
+    "soundfile>=0.13",
+    "omegaconf>=2.3,<2.4",
+    "numpy>=1.26",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
+
+[project.urls]
+"Kea-B 0.1" = "https://huggingface.co/audeolabs/kea-b-0.1"
+"Kea-B" = "https://huggingface.co/audeolabs/kea-b"
+"Kea-T" = "https://huggingface.co/audeolabs/kea-t"
+
+[project.scripts]
+kea-kernels = "kea_kernels.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["gpu: needs an NVIDIA SM120 GPU (RTX 5090); skipped elsewhere"]

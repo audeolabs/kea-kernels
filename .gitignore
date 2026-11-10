@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+.pytest_cache/
+# model downloads and compiled kernels never belong in the repository
+*.safetensors
+*.cubin
+*.nemo
