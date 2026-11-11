@@ -6,7 +6,8 @@
   tile tables tuned on that card, and no other GPU has been tested. `load()` raises a `ValueError` on any
   other device.
 - **Driver:** one that supports CUDA 12.8 (R570 or newer).
-- **Linux, Python 3.11 or newer.**
+- **Linux, Python 3.11 or newer, and a C compiler** (`gcc` or `clang`, for example `apt install gcc`). Triton
+  uses it once, to build a small launcher module that it then caches.
 - **Packages** (installed with the package; the versions we measured are in brackets): PyTorch 2.11 built for
   CUDA 12.8 [2.11.0+cu128], Triton 3.6 [3.6.0], NeMo 3.0 with its ASR extras [3.0.0], cuda-bindings 12.9,
   NVRTC 12 from `nvidia-cuda-nvrtc-cu12` [12.8.93], safetensors, soundfile and omegaconf.
@@ -140,6 +141,8 @@ file against the manifest's SHA-256 (`verify=False` or `--no-verify` skips this)
   other hardware, run the standalone loader in each model download (`load_kea_b.py`, `load_binary.py`,
   `load_ternary.py`). It rebuilds an ordinary FP32 NeMo model and works on any GPU or CPU, with the same
   accuracy, but not the memory or speed savings.
+- **`Failed to find C compiler`**: install `gcc` (or set `CC` to a C compiler). Triton needs one the first
+  time it runs.
 - **`NVRTC 12 was not found`**: `pip install nvidia-cuda-nvrtc-cu12`, or put `libnvrtc.so.12` on
   `LD_LIBRARY_PATH`.
 - **Slow decoding:** `kea_kernels.decoder_graphs_mode(model)` should return `full_graph` after the first
