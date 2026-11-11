@@ -105,8 +105,9 @@ publish no numbers for them.
 
 ## What to expect
 
-kea-kernels runs the same kernel sources as the research runtime the model cards were measured with, so
-accuracy should be what the cards report for kernel mode:
+kea-kernels reproduces the research runtime the model cards were measured with. On 40 LibriSpeech
+dev-other clips, every mode above gave the same tokens and timestamps as that runtime. So accuracy is
+what the cards report for kernel mode:
 
 - **Kea-B 0.1, x1:** a 6.77% mean test WER over the seven sets, the same as its FP32 numbers to within
   0.05 points per set ([card](https://huggingface.co/audeolabs/kea-b-0.1)).
@@ -127,7 +128,7 @@ calls with a cached length are fast. Each model loads in a few seconds plus NeMo
 | Variable | Effect |
 | --- | --- |
 | `KEA_KERNELS_CACHE` | where compiled 1-bit kernels are cached (default `$XDG_CACHE_HOME/kea-kernels`, else `~/.cache/kea-kernels`) |
-| `TRITON_CACHE_DIR` | Triton's kernel cache (default `~/.triton/cache`) |
+| `TRITON_CACHE_DIR` | Triton's kernel cache (default `~/.triton/cache`; about 430 MB after all six modes) |
 | `CUDA_HOME` | only read by PyTorch's NVRTC helper; if it's unset, kea-kernels points it at an empty directory in its cache |
 | `CUDA_VISIBLE_DEVICES` | which GPU; or pass `device="cuda:1"` |
 
