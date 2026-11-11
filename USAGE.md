@@ -104,9 +104,8 @@ publish no numbers for them.
 
 ## What to expect
 
-kea-kernels reproduces our research runtime: on the 40 test clips we checked, every mode above gave the
-same tokens as the runtime the model cards were measured with. So accuracy is what the cards report for
-kernel mode:
+kea-kernels runs the same kernel sources as the research runtime the model cards were measured with, so
+accuracy should be what the cards report for kernel mode:
 
 - **Kea-B 0.1, x1:** a 6.77% mean test WER over the seven sets, the same as its FP32 numbers to within
   0.05 points per set ([card](https://huggingface.co/audeolabs/kea-b-0.1)).
